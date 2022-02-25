@@ -3,3 +3,5 @@ compile:
   script:
     - ls -l /
     - httpd -v
+  tags:
+    - http-docker
