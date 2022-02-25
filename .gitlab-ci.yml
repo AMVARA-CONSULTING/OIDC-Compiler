@@ -4,7 +4,7 @@ compile:
     - $(pwd)/entrypoint.sh
   artifacts:
     paths:
-      - mod_auth_openidc.so*
+      - dist/*
     expire_in: 1 week
   tags:
     - http-docker
