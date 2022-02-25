@@ -14,6 +14,9 @@
 # get the dist directory
 DISTFOLDER="$(dirname ${0})/dist"
 
+# make dist folder if missing
+test ! -d ${DISTFOLDER} && mkdir ${DISTFOLDER}
+
 # update libraries
 echo "Updating packages"
 apt-get update
