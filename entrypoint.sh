@@ -11,6 +11,9 @@
 # 2021-12-28  Arslan  Created this file. 
 ######################################################
 
+# get the dist directory
+DISTFOLDER="$(dirname ${0})/dist"
+
 # update libraries
 echo "Updating packages"
 apt-get update
@@ -71,9 +74,9 @@ COMPILED_VERSION=$(strings ${MODULE_PATH} | grep -E mod_auth_openidc-[0-9\.] | h
 
 if [[ "${COMPILED_VERSION}" == "${FILENAME}" ]]; then
     echo "mod_auth_openidc module has been compiled successfuly."
-    cp ${MODULE_PATH} $(dirname ${0})/dist/mod_auth_openidc.so_${LATEST_OIDC_VERSION:1}
+    cp ${MODULE_PATH} ${DISTFOLDER}/mod_auth_openidc.so_${LATEST_OIDC_VERSION:1}
     echo "You can find mod_auth_openidc.so_${LATEST_OIDC_VERSION:1} in the dist folder."
-    md5sum $(dirname ${0})/dist/mod_auth_openidc.so_${LATEST_OIDC_VERSION:1}
+    md5sum $(dirname ${DISTFOLDER}/mod_auth_openidc.so_${LATEST_OIDC_VERSION:1}
 else
     echo "Expecting version ${FILENAME} to be compiled but found ${COMPILED_VERSION}"
     echo "Something is not right, please check."
