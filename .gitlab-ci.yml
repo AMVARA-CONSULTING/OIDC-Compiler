@@ -1,7 +1,10 @@
 compile:
   image: httpd:latest
   script:
-    - ls -l
-    - httpd -v
+    - ./entrypoint.sh
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
   tags:
     - http-docker
