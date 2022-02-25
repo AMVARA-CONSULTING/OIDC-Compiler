@@ -1,7 +1,7 @@
 compile:
   image: httpd:latest
   script:
-    - ./entrypoint.sh
+    - $(pwd)/entrypoint.sh
   artifacts:
     paths:
       - dist/
