@@ -1,0 +1,4 @@
+image: httpd:latest
+script:
+  - ls -l /
+  - httpd -v
