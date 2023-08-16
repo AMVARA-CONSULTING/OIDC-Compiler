@@ -19,14 +19,14 @@ test ! -d ${DISTFOLDER} && mkdir ${DISTFOLDER}
 
 # update libraries
 echo "Updating packages"
-apt-get update
+apt-get update >/dev/null
 # install basic commands
 echo "Installing basic packages to work with"
-apt-get install -y curl jq wget unzip
+apt-get install -y curl jq wget unzip >/dev/null
 
 # get the latest releases version from mod_auth_openidc repository
 echo "Getting released version from mod_auth_openidc repository"
-curl https://api.github.com/repos/zmartzone/mod_auth_openidc/releases --insecure -s -o /tmp/mod_auth_openidc_releases
+curl https://api.github.com/repositories/18187508/releases --insecure -s -o /tmp/mod_auth_openidc_releases
 
 # get basic information from the latest release like version number
 echo -ne "Getting latest mod_auth_openidc version: "
@@ -47,15 +47,12 @@ wget -q ${SOURCE_CODE_URL} -O ${DOWNLOAD_NAME}.zip
 
 # download all the dependencies needed for mod_auth_openidc
 echo "Installing dependencies required for mod_auth_openidc"
-apt-get install -y pkg-config make gcc gdb lcov valgrind
-apt-get install -y autoconf automake libtool
-apt-get install -y libssl-dev libjansson-dev libcurl4-openssl-dev check
-apt-get install -y libpcre3-dev zlib1g-dev libapr1-dev libaprutil1-dev
+apt-get install -y pkg-config make gcc gdb lcov valgrind >/dev/null
+apt-get install -y autoconf automake libtool >/dev/null
+apt-get install -y libssl-dev libjansson-dev libcurl4-openssl-dev check >/dev/null
+apt-get install -y libpcre3-dev zlib1g-dev libapr1-dev libaprutil1-dev >/dev/null
+apt-get install -y libcjose0 libcjose-dev >/dev/null
 cd /tmp
-wget -q https://mod-auth-openidc.org/download/libcjose0_0.6.1.5-1~bionic+1_amd64.deb
-wget -q https://mod-auth-openidc.org/download/libcjose-dev_0.6.1.5-1~bionic+1_amd64.deb
-dpkg -i libcjose0_0.6.1.5-1~bionic+1_amd64.deb
-dpkg -i libcjose-dev_0.6.1.5-1~bionic+1_amd64.deb
 
 # unzip mod_auth_openidc compressed file
 echo "Unzipping mod_auth_openidc source code"
