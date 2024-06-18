@@ -33,7 +33,7 @@ The script updates system packages, fetches the latest release of `mod_auth_open
 <br>
 <hr>
 
-### Documentation of `entrypoint.sh`
+### Explanation of `entrypoint.sh`
 
 The `entrypoint.sh` script performs the following steps:
 
@@ -69,7 +69,7 @@ The `entrypoint.sh` script performs the following steps:
    - If the version check fails, it prints an error message and exits with a non-zero status.
 
 
-### Documentation of  `docker-compose.yaml`
+### Explanation of  `docker-compose.yaml`
 
 The `docker-compose.yaml` file defines a Docker Compose configuration for running the `entrypoint.sh` script in a Docker container. Here's a breakdown of its configuration:
 
