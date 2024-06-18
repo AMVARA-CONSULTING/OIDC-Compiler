@@ -8,3 +8,6 @@ compile:
     expire_in: 1 week
   tags:
     - http-docker
+  only: # on what branch we'd like to run this job
+    refs:
+      - master
