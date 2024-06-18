@@ -20,6 +20,15 @@ The script updates system packages, fetches the latest release of `mod_auth_open
 
 3. **Compilation Output:**
    - If the compilation is successful, the compiled module (`mod_auth_openidc.so`) is placed in the `dist` directory on the host, making it available for further use or deployment.
+
+4. **Use Compiled binary with httpd/Apache:**
+   - Copy `mod_auth_openidc.so` with in your httpd or apache2 `module` directory.
+
+5. **Load Module**
+   - Add `LoadModule auth_openidc_module modules/mod_auth_openidc.so` in your `conf` file to load module. 
+   - Follow [how to use it](https://github.com/OpenIDC/mod_auth_openidc?tab=readme-ov-file#how-to-use-it) for further help.
+
+
 <br>
 <br>
 <hr>
