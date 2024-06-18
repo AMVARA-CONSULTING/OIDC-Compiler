@@ -1,4 +1,4 @@
-# Automating the Compilation and Installation of `mod_auth_openidc` Using Docker
+# Automating the compilation of `mod_auth_openidc` using Docker
 
 The provided [entrypoint.sh](/entrypoint.sh) script and [docker-compose.yml](/docker-compose.yml) file automate the process of downloading, and compiling the [mod_auth_openidc](https://github.com/zmartzone/mod_auth_openidc) module for Apache HTTP Server. 
 
