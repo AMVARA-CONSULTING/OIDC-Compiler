@@ -8,7 +8,7 @@
 # Usage: ./entrypoint.sh
 ######################################################
 # CHANGELOG:
-# 2021-12-28  Arslan  Created this file. 
+# 2021-12-28  Arslan Created this file. 
 ######################################################
 
 # get the dist directory
