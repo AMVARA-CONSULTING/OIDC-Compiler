@@ -15,7 +15,7 @@ services:
     image: "httpd:latest"
     container_name: oidc_compiler
     volumes:
-      - "./entrypoint.sh:/code/entrypoint.sh:ro" # entrypoint that will build the module
+      - "./entrypoint-amd.sh:/code/entrypoint.sh:ro" # entrypoint that will build the module
       - "./dist:/code/dist:rw" # folder where the module will be placed after compile
     working_dir: /code
     command: bash /code/entrypoint.sh
