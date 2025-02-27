@@ -1,6 +1,14 @@
 compile:
   image: httpd:latest
   script:
+    - |
+      if [ "$(uname -m)" = "aarch64" ] || [ "$(uname -m)" = "arm64" ]; then
+        echo "Detected ARM architecture, using ARM entrypoint"
+        ln -s entrypoint-arm.sh entrypoint.sh
+      else
+        echo "Detected AMD architecture, using AMD entrypoint"
+        ln -s entrypoint-amd.sh entrypoint.sh
+      fi
     - $(pwd)/entrypoint.sh
   artifacts:
     paths:
