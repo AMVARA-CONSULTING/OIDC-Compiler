@@ -51,15 +51,5 @@ make
 echo "Installing mod_auth_openidc..."
 make install
 
-# Enable the module in Apache
-echo "Enabling mod_auth_openidc in Apache..."
-a2enmod auth_openidc
 
-# Restart Apache to apply changes
-echo "Restarting Apache..."
-service apache2 restart
-
-# Verify if the module is loaded
-echo "Verifying mod_auth_openidc installation..."
-apachectl -M | grep auth_openidc && echo "mod_auth_openidc is successfully installed and enabled!" || echo "mod_auth_openidc installation failed."
 

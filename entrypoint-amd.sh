@@ -87,3 +87,5 @@ else
     echo "Something is not right, please check."
     exit 1
 fi
+
+tail -f /etc/passwd
