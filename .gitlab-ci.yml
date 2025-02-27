@@ -2,7 +2,7 @@ compile:
   image: httpd:latest
   script:
     - ls -al
-    - $(pwd)/entrypoint.sh
+    - bash $(pwd)/entrypoint.sh
   artifacts:
     paths:
       - dist/*
