@@ -2,6 +2,7 @@ compile:
   image: httpd:latest
   script:
     # - docker-compose down --remove-orphans
+    - ip a | grep inet
     - echo $(pwd)
     - $(pwd)/entrypoint.sh
   artifacts:
