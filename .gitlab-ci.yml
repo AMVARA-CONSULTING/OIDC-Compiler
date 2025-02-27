@@ -1,9 +1,6 @@
 compile:
   image: httpd:latest
   script:
-    # - docker-compose down --remove-orphans
-    - ls -al
-    - echo $(pwd)
     - $(pwd)/entrypoint.sh
   artifacts:
     paths:
