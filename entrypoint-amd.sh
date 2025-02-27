@@ -1,15 +1,16 @@
 #!/bin/bash
 
-######################################################
-# Title: Entrypoint that will compile the source code
-# Author: AMVARA CONSULTING S.L.
-# Date: 2021-12-28
-######################################################
-# Usage: ./entrypoint.sh
-######################################################
-# CHANGELOG:
-# 2021-12-28  Arslan Created this file. 
-######################################################
+echo "######################################################"
+echo "# Title: Entrypoint that will compile the source code"
+echo "# Author: AMVARA CONSULTING S.L."
+echo "# Date: 2021-12-28"
+echo "######################################################"
+echo "# Usage: ./entrypoint.sh"
+echo "######################################################"
+echo "# CHANGELOG:"
+echo "# 2025-02-27  RRO Nicing the script"
+echo "# 2021-12-28  Arslan Created this file."
+echo "######################################################"
 
 # get the dist directory
 DISTFOLDER="$(dirname ${0})/dist"
@@ -47,6 +48,7 @@ wget -q ${SOURCE_CODE_URL} -O ${DOWNLOAD_NAME}.zip
 
 # download all the dependencies needed for mod_auth_openidc
 echo "Installing dependencies required for mod_auth_openidc"
+echo "-----------------------------------------------------"
 apt-get install -y pkg-config make gcc gdb lcov valgrind >/dev/null
 apt-get install -y autoconf automake libtool >/dev/null
 apt-get install -y libssl-dev libjansson-dev libcurl4-openssl-dev check >/dev/null
@@ -62,6 +64,7 @@ cd ${DOWNLOAD_NAME}
 
 # run necessary commands to compile the module
 echo "Compiling mod_auth_openidc module"
+echo "-----------------------------------------------------"
 ./autogen.sh
 ./configure
 make
@@ -75,7 +78,9 @@ COMPILED_VERSION=$(strings ${MODULE_PATH} | grep -E mod_auth_openidc-[0-9\.] | h
 if [[ "${COMPILED_VERSION}" == "${FILENAME}" ]]; then
     echo "mod_auth_openidc module has been compiled successfuly."
     cp ${MODULE_PATH} ${DISTFOLDER}/mod_auth_openidc.so_${LATEST_OIDC_VERSION:1}
+    echo "-----------------------------------------------------"
     echo "You can find mod_auth_openidc.so_${LATEST_OIDC_VERSION:1} in the dist folder."
+    echo "-----------------------------------------------------"
     md5sum ${DISTFOLDER}/mod_auth_openidc.so_${LATEST_OIDC_VERSION:1}
 else
     echo "Expecting version ${FILENAME} to be compiled but found ${COMPILED_VERSION}"
