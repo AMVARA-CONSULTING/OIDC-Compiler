@@ -1,7 +1,5 @@
 compile:
   image: httpd:latest
-  before_script:
-    - docker rmi -f httpd:latest || true  # Remove the existing image (ignore errors)
   script:
     - $(pwd)/entrypoint.sh
   artifacts:
