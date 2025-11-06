@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 echo "######################################################"
 echo "# Title: Architecture detection and execution script"
@@ -68,12 +69,14 @@ echo "Creating auth_openidc.load file"
 echo 'LoadModule auth_openidc_module /usr/local/apache2/modules/mod_auth_openidc.so' > /etc/apache2/mods-available/auth_openidc.load
 
 echo -ne "Setting ServerName ... "
-grep -q "ServerName localhost" /etc/apache2/apache2.conf && (echo " already set"; exit 0;) || (echo "ServerName localhost" >> /etc/apache2/apache2.conf && echo " done" || echo " failed"; exit 1; )
+grep -q "ServerName localhost" /usr/local/apache2/conf/httpd.conf \
+  && echo " already set" \
+  || (echo "ServerName localhost" >> /usr/local/apache2/conf/httpd.conf && echo " done")
 
-# Enable auth_openidc module
-a2enmod auth_openidc || echo " failed"
+# Include the OIDC config file (if not already included)
+grep -q "extra/auth_openidc.conf" /usr/local/apache2/conf/httpd.conf  || echo "Include conf/auth_openidc.conf" >> /usr/local/apache2/conf/httpd.conf
 
 echo -ne "Restarting Apache ... "
-apache2ctl restart && echo " done" || echo " failed"
+httpd -k restart && echo " done" || echo " failed"
 
 tail -f /dev/null

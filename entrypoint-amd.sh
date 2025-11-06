@@ -10,20 +10,58 @@ echo "######################################################"
 echo "# CHANGELOG:"
 echo "# 2025-02-27  RRO Nicing the script"
 echo "# 2021-12-28  Arslan Created this file."
+echo "# 2025-11-06  Anand Kushwaha updated the script fixing debian outdated packages"
 echo "######################################################"
 
-# get the dist directory
-DISTFOLDER="$(dirname ${0})/dist"
-
 # make dist folder if missing
-test ! -d ${DISTFOLDER} && mkdir ${DISTFOLDER}
+DISTFOLDER="$(dirname ${0})/dist"
+test ! -d "${DISTFOLDER}" && mkdir -p "${DISTFOLDER}"
 
-# update libraries
-echo "Updating packages"
-apt-get update >/dev/null
-# install basic commands
-echo "Installing basic packages to work with"
-apt-get install -y curl jq wget unzip >/dev/null
+echo "Updating packages..."
+export DEBIAN_FRONTEND=noninteractive
+apt-get update -y >/dev/null 2>&1
+
+# install utilities and Perl support (for debconf)
+echo "Installing basic utilities..."
+apt-get install -y \
+    apt-utils \
+    dialog \
+    perl \
+    jq \
+    curl \
+    wget \
+    unzip \
+    pkg-config \
+    build-essential \
+    ca-certificates \
+    autoconf \
+    automake \
+    libtool \
+    git \
+    >/dev/null 2>&1
+
+# install Apache + APR dependencies (required for mod_auth_openidc)
+echo "Installing Apache and build dependencies for mod_auth_openidc..."
+apt-get install -y \
+    apache2-dev \
+    libapache2-mod-auth-openidc \
+    libapr1-dev \
+    libaprutil1-dev \
+    libpcre2-dev \
+    zlib1g-dev \
+    libssl-dev \
+    libjansson-dev \
+    libcurl4-openssl-dev \
+    libcjose-dev \
+    check \
+    gdb \
+    lcov \
+    valgrind \
+    >/dev/null 2>&1
+
+# clean up apt cache to keep image small
+apt-get clean
+rm -rf /var/lib/apt/lists/*
 
 # get the latest releases version from mod_auth_openidc repository
 echo "Getting released version from mod_auth_openidc repository"
@@ -36,40 +74,31 @@ echo ${LATEST_OIDC_VERSION}
 # generate the source code download URL
 echo -ne "Generating source code download URL: "
 SOURCE_CODE_URL="https://github.com/zmartzone/mod_auth_openidc/archive/refs/tags/${LATEST_OIDC_VERSION}.zip"
-echo ${SOURCE_CODE_URL}
+echo "${SOURCE_CODE_URL}"
+
 # mod_auth filename with version
 FILENAME="mod_auth_openidc-${LATEST_OIDC_VERSION:1}"
-# generate download name
 DOWNLOAD_NAME="/tmp/${FILENAME}"
 
 # download source code for mod_auth_openidc
 echo "Downloading source code to ${DOWNLOAD_NAME}.zip"
-wget -q ${SOURCE_CODE_URL} -O ${DOWNLOAD_NAME}.zip
-
-# download all the dependencies needed for mod_auth_openidc
-echo "Installing dependencies required for mod_auth_openidc"
-echo "-----------------------------------------------------"
-apt-get install -y pkg-config make gcc gdb lcov valgrind >/dev/null
-apt-get install -y autoconf automake libtool >/dev/null
-apt-get install -y libssl-dev libjansson-dev libcurl4-openssl-dev check >/dev/null
-apt-get install -y libpcre3-dev zlib1g-dev libapr1-dev libaprutil1-dev >/dev/null
-apt-get install -y libcjose0 libcjose-dev >/dev/null
-cd /tmp
+wget -q "${SOURCE_CODE_URL}" -O "${DOWNLOAD_NAME}.zip"
 
 # unzip mod_auth_openidc compressed file
-echo "Unzipping mod_auth_openidc source code"
-unzip ${DOWNLOAD_NAME}.zip
+echo "Unzipping mod_auth_openidc source code..."
+unzip -o "${DOWNLOAD_NAME}.zip" -d /tmp/
+
 # cd into the unzipped folder
-cd ${DOWNLOAD_NAME}
+cd "/tmp/${FILENAME}" || { echo "❌ Failed to enter source directory"; exit 1; }
 
 # run necessary commands to compile the module
 echo "Compiling mod_auth_openidc module"
 echo "-----------------------------------------------------"
 ./autogen.sh
 ./configure
-make
+make -j"$(nproc)"
 make install
-
+cd /code
 # module path
 MODULE_PATH="/usr/local/apache2/modules/mod_auth_openidc.so"
 # get compiled module's version
@@ -88,4 +117,3 @@ else
     exit 1
 fi
 
-tail -f /etc/passwd
